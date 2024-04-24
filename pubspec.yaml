@@ -40,4 +40,10 @@ flutter:
         - asset: assets/fonts/inter_light.ttf
         - asset: assets/fonts/inter_medium.ttf
         - asset: assets/fonts/inter_regular.ttf
+        - asset: assets/fonts/inter_black.ttf
+        - asset: assets/fonts/inter_extrabold.ttf
+        - asset: assets/fonts/inter_extralight.ttf
+        - asset: assets/fonts/inter_semibold.ttf
+        - asset: assets/fonts/inter_thin.ttf
+
           weight: 700
