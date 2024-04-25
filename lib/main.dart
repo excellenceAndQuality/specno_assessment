@@ -1,12 +1,14 @@
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-import 'package:roy_specno_assessment/pages/landing_page.dart';
+import 'package:roy_specno_assessment/pages/office/add_office.dart';
 
-void main() {
-  runApp(const MyApp());
+Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  runApp(MyApp());
 }
-
 class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+  final Future<FirebaseApp> _fbApp = Firebase.initializeApp();
+
 
   // This widget is the root of your application.
   @override
@@ -17,7 +19,26 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: const LandingPage(),
+      home: FutureBuilder(
+        future: _fbApp,
+        builder: (context, snapshot) {
+          if (snapshot.hasError) {
+            return const Scaffold(
+              body: Center(
+                child: Text("Something went wrong..."),
+              ),
+            );
+          } else if (snapshot.hasData) {
+            return const AddOffice();
+          } else {
+            return const Scaffold(
+              body: Center(
+                child: Text("Please wait..."),
+              ),
+            );
+          }
+        },
+      ),
     );
   }
 }

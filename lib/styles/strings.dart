@@ -7,4 +7,5 @@ class Strings {
   static String phoneNumber = "Phone Number";
   static String maximumCapacity = "Maximum Capacity";
   static String officeColour = "Office Colour";
+  static String addOffice = "ADD OFFICE";
 }

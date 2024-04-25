@@ -2,15 +2,18 @@ import 'package:flutter/material.dart';
 
 import '../styles/custom_colors.dart';
 
-class TextFieldWidget extends StatelessWidget {
+class TextFormFieldWidget extends StatelessWidget {
   final TextEditingController controller;
   final String hint;
-  const TextFieldWidget({super.key, required this.controller, required this.hint});
+  const TextFormFieldWidget({super.key, required this.controller, required this.hint});
 
   @override
   Widget build(BuildContext context) {
-    return TextField(
+    return TextFormField(
       controller: controller,
+      validator: (value) {
+        if (value!.isEmpty) return "Please enter your ${hint.toString()}";
+      },
       style: const TextStyle(
           fontSize: 16,
           fontFamily: "Inter",
