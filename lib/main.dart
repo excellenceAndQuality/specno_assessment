@@ -1,5 +1,6 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:roy_specno_assessment/pages/landing_page.dart';
 import 'package:roy_specno_assessment/pages/office/add_office.dart';
 
 Future<void> main() async {
@@ -29,7 +30,7 @@ class MyApp extends StatelessWidget {
               ),
             );
           } else if (snapshot.hasData) {
-            return const AddOffice();
+            return const LandingPage();
           } else {
             return const Scaffold(
               body: Center(

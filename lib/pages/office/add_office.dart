@@ -119,9 +119,9 @@ class _AddOfficeState extends State<AddOffice> {
                   alignment: Alignment.center,
                   child: ElevatedButton(
                     onPressed: (){
-
                       if (_formKey.currentState!.validate()) {
                         FocusScope.of(context).unfocus();
+                        addOfficeToCloud();
 
                       }
 
@@ -156,11 +156,11 @@ class _AddOfficeState extends State<AddOffice> {
     officeDocId = FirebaseFirestore.instance.collection("allOffices").doc().id;
 
     allOfficesRef.doc(officeDocId).set({
-      'officeName': officeNameController.toString(),
-      'physicalAddress': physicalAddressController.toString(),
-      'emailAddress': emailAddressController.toString(),
-      'phoneNumber': phoneNumberController.toString(),
-      'maximumCapacity': maximumCapacityController.toString(),
+      'officeName': officeNameController.text.toString(),
+      'physicalAddress': physicalAddressController.text.toString(),
+      'emailAddress': emailAddressController.text.toString(),
+      'phoneNumber': phoneNumberController.text.toString(),
+      'maximumCapacity': maximumCapacityController.text.toString(),
       'officeColorCode': officeColorCode,
       'createdAt': Timestamp.now(),
     }).whenComplete(() {
@@ -170,11 +170,6 @@ class _AddOfficeState extends State<AddOffice> {
               (route) => false);
     });
 
-    //Creating an empty collection of staffMembers
-    allOfficesRef.doc(officeDocId).collection("staffMembers").doc("").set({
-    }).whenComplete(() {
-
-    });
   }
 
   void printColorCode(int index) {

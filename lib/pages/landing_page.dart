@@ -38,7 +38,7 @@ class _LandingPageState extends State<LandingPage> {
         backgroundColor: CustomColors.button,
         onPressed: (){
           Navigator.of(context).push(MaterialPageRoute(
-            builder: (context) => const LandingPage(),
+            builder: (context) => const AddOffice(),
           ));
         },
         child: const Icon(Icons.add, color: CustomColors.background, size: 28),
