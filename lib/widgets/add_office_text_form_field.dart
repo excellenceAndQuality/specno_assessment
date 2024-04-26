@@ -2,10 +2,10 @@ import 'package:flutter/material.dart';
 
 import '../styles/custom_colors.dart';
 
-class TextFormFieldWidget extends StatelessWidget {
+class AddOfficeTextFormField extends StatelessWidget {
   final TextEditingController controller;
   final String hint;
-  const TextFormFieldWidget({super.key, required this.controller, required this.hint});
+  const AddOfficeTextFormField({super.key, required this.controller, required this.hint});
 
   @override
   Widget build(BuildContext context) {

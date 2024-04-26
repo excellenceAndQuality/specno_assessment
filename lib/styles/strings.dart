@@ -9,4 +9,7 @@ class Strings {
   static String officeColour = "Office Colour";
   static String addOffice = "ADD OFFICE";
   static String specno  = "Specno";
+  static String office = "Office";
+  static String staffMembersInOffice = "Staff Members In Office";
+
 }

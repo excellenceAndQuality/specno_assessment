@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:roy_specno_assessment/pages/landing_page.dart';
 import 'package:roy_specno_assessment/styles/custom_colors.dart';
-import 'package:roy_specno_assessment/widgets/text_form_field_widget.dart';
+import 'package:roy_specno_assessment/widgets/add_office_text_form_field.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import '../../styles/strings.dart';
 import '../../widgets/office_colour_button.dart';
@@ -61,15 +61,15 @@ class _AddOfficeState extends State<AddOffice> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                TextFormFieldWidget(controller: officeNameController, hint: Strings.officeName),
+                AddOfficeTextFormField(controller: officeNameController, hint: Strings.officeName),
                 const SizedBox(height: 10,),
-                TextFormFieldWidget(controller: physicalAddressController, hint: Strings.physicalAddress),
+                AddOfficeTextFormField(controller: physicalAddressController, hint: Strings.physicalAddress),
                 const SizedBox(height: 10,),
-                TextFormFieldWidget(controller: emailAddressController, hint: Strings.emailAddress),
+                AddOfficeTextFormField(controller: emailAddressController, hint: Strings.emailAddress),
                 const SizedBox(height: 10,),
-                TextFormFieldWidget(controller: phoneNumberController, hint: Strings.phoneNumber),
+                AddOfficeTextFormField(controller: phoneNumberController, hint: Strings.phoneNumber),
                 const SizedBox(height: 10,),
-                TextFormFieldWidget(controller: maximumCapacityController, hint: Strings.maximumCapacity),
+                AddOfficeTextFormField(controller: maximumCapacityController, hint: Strings.maximumCapacity),
                 const SizedBox(height: 20,),
                 Text(Strings.officeColour,
                   style: const TextStyle(
@@ -157,6 +157,7 @@ class _AddOfficeState extends State<AddOffice> {
     officeDocId = FirebaseFirestore.instance.collection("allOffices").doc().id;
 
     allOfficesRef.doc(officeDocId).set({
+      'officeDocId': officeDocId,
       'officeName': officeNameController.text.toString(),
       'physicalAddress': physicalAddressController.text.toString(),
       'emailAddress': emailAddressController.text.toString(),

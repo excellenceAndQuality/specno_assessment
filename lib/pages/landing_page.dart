@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:roy_specno_assessment/pages/office/add_office.dart';
+import 'package:roy_specno_assessment/pages/office/view_office.dart';
 import 'package:roy_specno_assessment/styles/custom_colors.dart';
 import 'package:roy_specno_assessment/styles/strings.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -149,6 +150,12 @@ class _LandingPageState extends State<LandingPage> {
                                 ),
                                 GestureDetector(
                                   onTap: (){
+                                    Navigator.pushAndRemoveUntil(
+                                        context,
+                                        MaterialPageRoute(
+                                            builder: (context) =>
+                                                OfficeView(documents[index]["officeDocId"])),
+                                            (route) => true);
 
                                   },
                                   child: const Icon(Icons.edit),
