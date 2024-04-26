@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:roy_specno_assessment/styles/custom_colors.dart';
 import 'package:roy_specno_assessment/styles/strings.dart';
+import 'package:roy_specno_assessment/widgets/add_new_staff_member_text_form_field.dart';
+import 'package:roy_specno_assessment/widgets/global_elevated_button.dart';
 import 'package:roy_specno_assessment/widgets/search_text_field.dart';
 
 class OfficeView extends StatefulWidget {
@@ -14,8 +16,11 @@ class OfficeView extends StatefulWidget {
 
 class _OfficeViewState extends State<OfficeView> {
 
+  final _formKey = GlobalKey<FormState>();
   late CollectionReference allOfficesRef;
   TextEditingController searchController = TextEditingController();
+  TextEditingController firstName = TextEditingController();
+  TextEditingController lastName = TextEditingController();
   bool _isExpanded = false;
 
 
@@ -24,6 +29,7 @@ class _OfficeViewState extends State<OfficeView> {
     // TODO: implement initState
     super.initState();
     allOfficesRef = FirebaseFirestore.instance.collection('allOffices');
+
   }
 
   @override
@@ -72,7 +78,7 @@ class _OfficeViewState extends State<OfficeView> {
       floatingActionButton: FloatingActionButton(
         backgroundColor: CustomColors.button,
         onPressed: (){
-          _addUser(context);
+          _addUserDialog(context);
         },
         child: const Icon(Icons.add, color: CustomColors.background, size: 28),
       ),
@@ -284,8 +290,7 @@ class _OfficeViewState extends State<OfficeView> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: const <Widget>[
-                      Padding(
-                        padding: EdgeInsets.all(8.0),
+                      Center(
                         child: Text(
                           "Please wait...",
                           style: TextStyle(
@@ -354,6 +359,192 @@ class _OfficeViewState extends State<OfficeView> {
                 ),
               );
             })
+    );
+  }
+
+  _addUserDialog(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          shape: const RoundedRectangleBorder(
+              borderRadius:
+              BorderRadius.all(
+                  Radius.circular(10))),
+          content: Container(
+              width: MediaQuery.of(context).size.width,
+              decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(50),
+                  color: CustomColors.background
+              ),
+              child: Form(
+                key: _formKey,
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: <Widget>[
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(Strings.newStaffMember,
+                          style: const TextStyle(
+                              fontFamily: "Inter",
+                              fontWeight: FontWeight.w800,
+                              fontSize: 24,
+                              color: Colors.black
+                          ),
+                        ),
+                        const Icon(Icons.close, color: Colors.black,)
+                      ],
+                    ),
+                    const SizedBox(height: 30,),
+                    AddNewStaffMemberTextFormField(controller: firstName, hint: "First Name"),
+                    const SizedBox(height: 20,),
+                    AddNewStaffMemberTextFormField(controller: lastName, hint: "Last Name"),
+                    const SizedBox(height: 20,),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        Container(
+                          width: 6,
+                          height: 6,
+                          decoration: BoxDecoration(
+                            color: CustomColors.blueButtonColour,
+                            borderRadius: BorderRadius.circular(80),
+                          ),
+                        ),
+                        const SizedBox(width: 2,),
+                        Container(
+                          width: 6,
+                          height: 6,
+                          decoration: BoxDecoration(
+                            color: Colors.transparent,
+                            borderRadius: BorderRadius.circular(80),
+                            border: Border.all(
+                              color: CustomColors.blueButtonColour,
+                              width: 4,
+                            ),
+                          ),
+                        ),
+
+                      ],
+                    ),
+                    const SizedBox(height: 20,),
+                    GlobalElevatedButton(
+                        onPressed: (){
+                          if (_formKey.currentState!.validate()) {
+                            FocusScope.of(context).unfocus();
+                            _selectAvatarDialog(context);
+
+                          }
+
+                        },
+                        backgroundColor: CustomColors.blueButtonColour,
+                        buttonText: "NEXT"),
+                  ],
+                )
+              )),
+
+        );
+      },
+    );
+  }
+
+  _selectAvatarDialog(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          shape: const RoundedRectangleBorder(
+              borderRadius:
+              BorderRadius.all(
+                  Radius.circular(10))),
+          content: Container(
+              width: MediaQuery.of(context).size.width,
+              decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(50),
+                  color: CustomColors.background
+              ),
+              child: Form(
+                  key: _formKey,
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: <Widget>[
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          const Icon(Icons.close, color: Colors.black,),
+                          Text(Strings.newStaffMember,
+                            style: const TextStyle(
+                                fontFamily: "Inter",
+                                fontWeight: FontWeight.w800,
+                                fontSize: 24,
+                                color: Colors.black
+                            ),
+                          ),
+                          const Icon(Icons.close, color: Colors.black,)
+                        ],
+                      ),
+                      const SizedBox(height: 30,),
+                      Text(Strings.avatar,
+                        style: const TextStyle(
+                            fontFamily: "Inter",
+                            fontWeight: FontWeight.w600,
+                            fontSize: 24,
+                            color: Colors.black
+                        ),
+                      ),
+                      const SizedBox(height: 20,),
+                      AddNewStaffMemberTextFormField(controller: firstName, hint: "Last Name"),
+                      const SizedBox(height: 20,),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          Container(
+                            width: 6,
+                            height: 6,
+                            decoration: BoxDecoration(
+                              color: CustomColors.blueButtonColour,
+                              borderRadius: BorderRadius.circular(80),
+                            ),
+                          ),
+                          const SizedBox(width: 2,),
+                          Container(
+                            width: 6,
+                            height: 6,
+                            decoration: BoxDecoration(
+                              color: Colors.transparent,
+                              borderRadius: BorderRadius.circular(80),
+                              border: Border.all(
+                                color: CustomColors.blueButtonColour,
+                                width: 4,
+                              ),
+                            ),
+                          ),
+
+                        ],
+                      ),
+                      const SizedBox(height: 20,),
+                      GlobalElevatedButton(
+                          onPressed: (){
+                            if (_formKey.currentState!.validate()) {
+                              FocusScope.of(context).unfocus();
+                              _selectAvatarDialog(context);
+
+                            }
+
+                          },
+                          backgroundColor: CustomColors.blueButtonColour,
+                          buttonText: "NEXT"),
+                    ],
+                  )
+              )),
+
+        );
+      },
     );
   }
 

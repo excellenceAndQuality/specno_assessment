@@ -11,5 +11,7 @@ class Strings {
   static String specno  = "Specno";
   static String office = "Office";
   static String staffMembersInOffice = "Staff Members In Office";
+  static String newStaffMember = 'New Staff Member';
+  static String avatar = 'Avatar';
 
 }

@@ -8,7 +8,7 @@ class CustomColors {
   static const backButton = Color(0xFF292D32);
   static const hint = Color(0x991E293B);
   static const textFieldBorder = Color(0xFFF1F9FF);
-  static const addOfficeColour = Color(0xFF489DDA);
+  static const blueButtonColour = Color(0xFF489DDA);
 
   static const officeColor1 = Color(0xFFFFBE0B);
   static const officeColor2 = Color(0xFFFF9B71);

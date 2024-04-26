@@ -3,6 +3,7 @@ import 'package:roy_specno_assessment/pages/landing_page.dart';
 import 'package:roy_specno_assessment/styles/custom_colors.dart';
 import 'package:roy_specno_assessment/widgets/add_office_text_form_field.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:roy_specno_assessment/widgets/global_elevated_button.dart';
 import '../../styles/strings.dart';
 import '../../widgets/office_colour_button.dart';
 
@@ -118,31 +119,16 @@ class _AddOfficeState extends State<AddOffice> {
                 const SizedBox(height: 40),
                 Align(
                   alignment: Alignment.center,
-                  child: ElevatedButton(
-                    onPressed: (){
-                      if (_formKey.currentState!.validate()) {
-                        FocusScope.of(context).unfocus();
-                        addOfficeToCloud();
+                  child: GlobalElevatedButton(
+                      onPressed: (){
+                        if (_formKey.currentState!.validate()) {
+                          FocusScope.of(context).unfocus();
+                          addOfficeToCloud();
 
-                      }
-
-                    },
-                    style: ElevatedButton.styleFrom(
-                      elevation: 0,
-                      foregroundColor: Colors.white,
-                      backgroundColor: CustomColors.addOfficeColour,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(100),
-                      ),
-                      minimumSize: const Size(232, 48),
-                    ),
-                    child: Text(Strings.addOffice,
-                      style: const TextStyle(
-                          fontWeight: FontWeight.w500,
-                          fontSize: 14,
-                          fontFamily: "Inter"
-                      ),),
-                  ),
+                        }
+                      },
+                      backgroundColor: CustomColors.blueButtonColour,
+                      buttonText: Strings.addOffice)
                 )
 
               ],
