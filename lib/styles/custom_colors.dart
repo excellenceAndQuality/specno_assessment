@@ -23,4 +23,10 @@ class CustomColors {
   static const officeColor11 = Color(0xFF8338EC);
   static const officeColorActive = Color(0xFF475569);
 
+  static const gradientBlue = Color(0xFF489DDA);
+  static const gradientBlue2 = Color(0xFF49AAEF);
+  static const gradientBlue3 = Color(0xFF3C9DE3);
+  static const dividerColour = Color(0xFF0D4477);
+
+
 }

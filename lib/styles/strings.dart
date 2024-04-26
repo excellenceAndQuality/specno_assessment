@@ -8,4 +8,5 @@ class Strings {
   static String maximumCapacity = "Maximum Capacity";
   static String officeColour = "Office Colour";
   static String addOffice = "ADD OFFICE";
+  static String specno  = "Specno";
 }

@@ -14,6 +14,7 @@ class AddOffice extends StatefulWidget {
 }
 
 class _AddOfficeState extends State<AddOffice> {
+
   final _formKey = GlobalKey<FormState>();
   late CollectionReference allOfficesRef;
   TextEditingController officeNameController = TextEditingController();
@@ -162,6 +163,7 @@ class _AddOfficeState extends State<AddOffice> {
       'phoneNumber': phoneNumberController.text.toString(),
       'maximumCapacity': maximumCapacityController.text.toString(),
       'officeColorCode': officeColorCode,
+      'capacity': 0,
       'createdAt': Timestamp.now(),
     }).whenComplete(() {
       Navigator.pushAndRemoveUntil(
