@@ -91,7 +91,7 @@ class _AddOfficeState extends State<AddOffice> {
                             ischecked[i] = i == index;
                           }
                         });
-                        printColorCode(index + 1);
+                        getSelectedColourCode(index + 1);
                       },
                       colorIndex: index + 1,
                     );
@@ -110,7 +110,7 @@ class _AddOfficeState extends State<AddOffice> {
                             ischecked[i] = i == index + 6;
                           }
                         });
-                        printColorCode(index + 7);
+                        getSelectedColourCode(index + 7);
                       },
                       colorIndex: index + 7,
                     );
@@ -161,7 +161,7 @@ class _AddOfficeState extends State<AddOffice> {
 
   }
 
-  void printColorCode(int index) {
+  void getSelectedColourCode(int index) {
     switch (index) {
       case 1:
         officeColorCode = "0xffffbe0b";

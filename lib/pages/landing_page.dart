@@ -5,6 +5,7 @@ import 'package:roy_specno_assessment/pages/office/view_office.dart';
 import 'package:roy_specno_assessment/styles/custom_colors.dart';
 import 'package:roy_specno_assessment/styles/strings.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:roy_specno_assessment/widgets/new_staff_member_avatar.dart';
 
 class LandingPage extends StatefulWidget {
   const LandingPage({super.key});
@@ -17,7 +18,7 @@ class _LandingPageState extends State<LandingPage> {
 
   late CollectionReference allOfficesRef;
   bool _isExpanded = false;
-  String mytext = "Junior Langa";
+
 
   @override
   void initState() {

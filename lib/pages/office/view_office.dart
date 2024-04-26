@@ -4,6 +4,7 @@ import 'package:roy_specno_assessment/styles/custom_colors.dart';
 import 'package:roy_specno_assessment/styles/strings.dart';
 import 'package:roy_specno_assessment/widgets/add_new_staff_member_text_form_field.dart';
 import 'package:roy_specno_assessment/widgets/global_elevated_button.dart';
+import 'package:roy_specno_assessment/widgets/new_staff_member_avatar.dart';
 import 'package:roy_specno_assessment/widgets/search_text_field.dart';
 
 class OfficeView extends StatefulWidget {
@@ -19,15 +20,18 @@ class _OfficeViewState extends State<OfficeView> {
   final _formKey = GlobalKey<FormState>();
   late CollectionReference allOfficesRef;
   TextEditingController searchController = TextEditingController();
-  TextEditingController firstName = TextEditingController();
-  TextEditingController lastName = TextEditingController();
+  TextEditingController firstNameController = TextEditingController();
+  TextEditingController lastNameController = TextEditingController();
   bool _isExpanded = false;
+  String selectedAvatarUrl = "", staffMemberDocId = "";
+  late List<bool> ischecked;
 
 
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
+    ischecked = List<bool>.generate(11, (index) => false);
     allOfficesRef = FirebaseFirestore.instance.collection('allOffices');
 
   }
@@ -78,7 +82,7 @@ class _OfficeViewState extends State<OfficeView> {
       floatingActionButton: FloatingActionButton(
         backgroundColor: CustomColors.button,
         onPressed: (){
-          _addUserDialog(context);
+          _selectAvatarDialog(context);
         },
         child: const Icon(Icons.add, color: CustomColors.background, size: 28),
       ),
@@ -398,9 +402,9 @@ class _OfficeViewState extends State<OfficeView> {
                       ],
                     ),
                     const SizedBox(height: 30,),
-                    AddNewStaffMemberTextFormField(controller: firstName, hint: "First Name"),
+                    AddNewStaffMemberTextFormField(controller: firstNameController, hint: "First Name"),
                     const SizedBox(height: 20,),
-                    AddNewStaffMemberTextFormField(controller: lastName, hint: "Last Name"),
+                    AddNewStaffMemberTextFormField(controller: lastNameController, hint: "Last Name"),
                     const SizedBox(height: 20,),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
@@ -454,99 +458,185 @@ class _OfficeViewState extends State<OfficeView> {
   _selectAvatarDialog(BuildContext context) {
     showDialog(
       context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          shape: const RoundedRectangleBorder(
-              borderRadius:
-              BorderRadius.all(
-                  Radius.circular(10))),
-          content: Container(
-              width: MediaQuery.of(context).size.width,
-              decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(50),
-                  color: CustomColors.background
-              ),
-              child: Form(
-                  key: _formKey,
-                  child: Column(
-                    mainAxisSize: MainAxisSize.min,
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    children: <Widget>[
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          const Icon(Icons.close, color: Colors.black,),
-                          Text(Strings.newStaffMember,
-                            style: const TextStyle(
-                                fontFamily: "Inter",
-                                fontWeight: FontWeight.w800,
-                                fontSize: 24,
-                                color: Colors.black
+      builder: (context) {
+        return StatefulBuilder(
+            builder: (BuildContext context, StateSetter stateSetter){
+              return AlertDialog(
+                shape: const RoundedRectangleBorder(
+                    borderRadius:
+                    BorderRadius.all(
+                        Radius.circular(10))),
+                content: Container(
+                    width: MediaQuery.of(context).size.width,
+                    decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(50),
+                        color: CustomColors.background
+                    ),
+                    child: Form(
+                        key: _formKey,
+                        child: Column(
+                          mainAxisSize: MainAxisSize.min,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          children: <Widget>[
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                const Icon(Icons.arrow_back, color: Colors.black,),
+                                Text(Strings.newStaffMember,
+                                  style: const TextStyle(
+                                      fontFamily: "Inter",
+                                      fontWeight: FontWeight.w800,
+                                      fontSize: 24,
+                                      color: Colors.black
+                                  ),
+                                ),
+                                const Icon(Icons.close, color: Colors.black,)
+                              ],
                             ),
-                          ),
-                          const Icon(Icons.close, color: Colors.black,)
-                        ],
-                      ),
-                      const SizedBox(height: 30,),
-                      Text(Strings.avatar,
-                        style: const TextStyle(
-                            fontFamily: "Inter",
-                            fontWeight: FontWeight.w600,
-                            fontSize: 24,
-                            color: Colors.black
-                        ),
-                      ),
-                      const SizedBox(height: 20,),
-                      AddNewStaffMemberTextFormField(controller: firstName, hint: "Last Name"),
-                      const SizedBox(height: 20,),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: [
-                          Container(
-                            width: 6,
-                            height: 6,
-                            decoration: BoxDecoration(
-                              color: CustomColors.blueButtonColour,
-                              borderRadius: BorderRadius.circular(80),
-                            ),
-                          ),
-                          const SizedBox(width: 2,),
-                          Container(
-                            width: 6,
-                            height: 6,
-                            decoration: BoxDecoration(
-                              color: Colors.transparent,
-                              borderRadius: BorderRadius.circular(80),
-                              border: Border.all(
-                                color: CustomColors.blueButtonColour,
-                                width: 4,
+                            const SizedBox(height: 30,),
+                            Text(Strings.avatar,
+                              style: const TextStyle(
+                                  fontFamily: "Inter",
+                                  fontWeight: FontWeight.w600,
+                                  fontSize: 24,
+                                  color: Colors.black
                               ),
                             ),
-                          ),
+                            const SizedBox(height: 20,),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: List.generate(4, (index) {
+                                return NewStaffMemberAvatar(
+                                  isChecked: ischecked,
+                                  onTap: () {
+                                    setState(() {
+                                      for (var i = 0; i < ischecked.length; i++) {
+                                        ischecked[i] = i == index;
+                                      }
+                                    });
+                                    getAvatarUrlCode(index + 1);
+                                  },
+                                  index: index + 1,
+                                );
+                              }),
+                            ),
+                            const SizedBox(height: 10),
+                            // Second Row with 5 buttons
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceAround,
+                              children: List.generate(3, (index) {
+                                return NewStaffMemberAvatar(
+                                  isChecked: ischecked,
+                                  onTap: () {
+                                    setState(() {
+                                      for (var i = 0; i < ischecked.length; i++) {
+                                        ischecked[i] = i == index + 4;
+                                      }
+                                    });
+                                    getAvatarUrlCode(index + 5);
+                                  },
+                                  index: index + 5,
+                                );
+                              }),
+                            ),
+                            const SizedBox(height: 20,),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: [
+                                Container(
+                                  width: 6,
+                                  height: 6,
+                                  decoration: BoxDecoration(
+                                    color: Colors.transparent,
+                                    borderRadius: BorderRadius.circular(80),
+                                    border: Border.all(
+                                      color: CustomColors.blueButtonColour,
+                                      width: 4,
+                                    ),
+                                  ),
+                                ),
+                                const SizedBox(width: 2,),
+                                Container(
+                                  width: 6,
+                                  height: 6,
+                                  decoration: BoxDecoration(
+                                    color: CustomColors.blueButtonColour,
+                                    borderRadius: BorderRadius.circular(80),
+                                  ),
+                                ),
+                              ],
+                            ),
+                            const SizedBox(height: 20,),
+                            GlobalElevatedButton(
+                                onPressed: (){
+                                  if (_formKey.currentState!.validate()) {
+                                    FocusScope.of(context).unfocus();
+                                    _selectAvatarDialog(context);
+                                  }
+                                },
+                                backgroundColor: CustomColors.blueButtonColour,
+                                buttonText: "ADD STAFF MEMBER"),
+                          ],
+                        )
+                    )),
 
-                        ],
-                      ),
-                      const SizedBox(height: 20,),
-                      GlobalElevatedButton(
-                          onPressed: (){
-                            if (_formKey.currentState!.validate()) {
-                              FocusScope.of(context).unfocus();
-                              _selectAvatarDialog(context);
-
-                            }
-
-                          },
-                          backgroundColor: CustomColors.blueButtonColour,
-                          buttonText: "NEXT"),
-                    ],
-                  )
-              )),
-
-        );
+              );
+            });
       },
     );
   }
 
+  void addStaffMemberToCloud(){
+    staffMemberDocId = FirebaseFirestore.instance.collection("allOffices").doc().id;
+
+    allOfficesRef.doc(widget.officeDocId).collection("staffMembers").doc(staffMemberDocId).set({
+      'firstName': firstNameController.text.toString(),
+      'lastName': lastNameController.text.toString(),
+      'avatarUrl': selectedAvatarUrl.toString(),
+      'capacity': 0,
+      'createdAt': Timestamp.now(),
+    }).whenComplete(() {
+      allOfficesRef.doc(widget.officeDocId).update({
+        'capacity': FieldValue.increment(1)
+      }).whenComplete(() {
+
+        Navigator.pop(context);
+
+      });
+    });
+
+  }
+
+  void getAvatarUrlCode(int index) {
+    switch (index) {
+      case 1:
+        selectedAvatarUrl = "https://firebasestorage.googleapis.com/v0/b/specno-a5146.appspot.com/o/Avatars%2Fimg_1.png?alt=media&token=1544cd25-3f5a-446d-8e9f-dfc6e14351a6";
+        break;
+      case 2:
+        selectedAvatarUrl = "https://firebasestorage.googleapis.com/v0/b/specno-a5146.appspot.com/o/Avatars%2Fimg_2.png?alt=media&token=628dfa42-1e0d-4dcc-b5e2-373edc4e9c9c";
+        break;
+      case 3:
+        selectedAvatarUrl = "https://firebasestorage.googleapis.com/v0/b/specno-a5146.appspot.com/o/Avatars%2Fimg_3.png?alt=media&token=681cc54e-8eb0-4705-ad90-1a3810adb24b";
+        break;
+      case 4:
+        break;
+        selectedAvatarUrl = "https://firebasestorage.googleapis.com/v0/b/specno-a5146.appspot.com/o/Avatars%2Fimg_4.png?alt=media&token=3bf9fc89-8746-4bbe-9252-c702b94d25cf";
+        break;
+      case 5:
+        selectedAvatarUrl = "https://firebasestorage.googleapis.com/v0/b/specno-a5146.appspot.com/o/Avatars%2Fimg_5.png?alt=media&token=2d50713c-def8-4a60-9894-8fba667080a7";
+        break;
+      case 6:
+        selectedAvatarUrl = "https://firebasestorage.googleapis.com/v0/b/specno-a5146.appspot.com/o/Avatars%2Fimg_6.png?alt=media&token=5530b773-73dc-448c-9795-73b778b54be9";
+        break;
+      case 7:
+        selectedAvatarUrl = "https://firebasestorage.googleapis.com/v0/b/specno-a5146.appspot.com/o/Avatars%2Fimg_7.png?alt=media&token=12ddc964-1f57-4642-84e0-7c204595bb33";
+        break;
+      default:
+        selectedAvatarUrl = "";
+
+    }
+  }
 
 }
